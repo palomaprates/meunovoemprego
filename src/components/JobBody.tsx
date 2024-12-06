@@ -8,15 +8,13 @@ export function JobBody({ job }: { job: IJob }) {
     <div style={stylesJobBodyContainer}>
       <span style={stylesJobTitle}>{job.title}</span>
       <div style={stylesJobSubtitleContainer}>
+        <div style={stylesJobSubtitle}>{job.category}</div>
         <div style={stylesJobSubtitle}>
-          {job.source}
-          {job.createdAt.toDate().toLocaleDateString()}
+          {/* {job.createdAt.toDate().toLocaleDateString()} */}
           <MdPlace />
           {job.location}
         </div>
         <div style={stylesJobSubtitle}>
-          {job.link}
-          {job.category}
           <MdOutlineWork />
           {job.company}
         </div>
