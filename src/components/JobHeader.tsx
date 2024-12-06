@@ -1,11 +1,10 @@
 import { IoSearch } from "react-icons/io5";
 import { JobLogo } from "./JobLogo";
-import { IJob } from "../App";
 
 export function JobHeader({
-  setJobs,
+  setString,
 }: {
-  setJobs: React.Dispatch<React.SetStateAction<IJob[]>>;
+  setString: (value: string) => void;
 }) {
   return (
     <div className="jobHeaderStyle">
@@ -19,12 +18,7 @@ export function JobHeader({
             className="inputStyle"
             placeholder="Digite sua pesquisa..."
             onChange={(e) => {
-              const searchTerm = e.target.value.toLowerCase();
-              setJobs((prevJobs) =>
-                prevJobs.filter((job) =>
-                  job.title.toLowerCase().includes(searchTerm)
-                )
-              );
+              setString(e.target.value);
             }}
           />
         </div>
