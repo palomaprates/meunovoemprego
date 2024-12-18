@@ -9,8 +9,8 @@
   background: linear-gradient(to bottom, #f3f4f6, #ffffff);
   overflow: hidden;
 }
-.jobheader {
-  display: flex;
+/* .jobheader { */
+/* display: flex;
   justify-content: center;
   align-items: center;
   height: 80px;
@@ -23,35 +23,39 @@
   font-weight: 200;
   font-style: normal;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+  gap: 10px;
+  border: 2px solid blue; */
+/* padding: 20px; */
+/* box-sizing: border-box; */
+/* } */
 
 .jobHeaderStyle {
   display: flex;
   justify-content: start;
   align-items: center;
   width: 100%;
-  gap: 200px;
+  gap: 90px;
+  border: 2px solid red;
+  /* box-sizing: border-box; */
 }
 
-.jobLogoStyle {
+.jobLogoContainer {
   display: flex;
   justify-content: start;
   align-items: center;
 }
 .stylesLogo {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  align-self: start;
-  height: 50px;
   min-width: 200px;
   color: white;
   font-size: 20px;
-  padding: 10px;
-  gap: 5px;
+  margin: 0 20px;
+  /* gap: 5px; */
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   font-style: normal;
+  /* border: 2px solid pink; */
 }
 
 .searchBar {
@@ -59,16 +63,20 @@
   justify-content: center;
   align-items: center;
   align-self: center;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   padding: 10px;
+  margin: 20px;
   background-color: white;
+  /* border: 2px solid black; */
 }
 
 .searchBarInput {
   flex: 1;
+  /* border: 2px solid salmon; */
 }
 
 .inputStyle {
@@ -92,6 +100,7 @@
   font-size: 16px;
   border-radius: 0 20px 20px 0;
   color: black;
+  /* border: 2px solid green; */
 }
 
 .jobbodycontainer {
@@ -99,7 +108,7 @@
   /* flex-direction: column; */
   overflow-y: scroll;
   height: 100%;
-  padding: 20px;
+  padding: 10px;
   gap: 20px;
   justify-content: center;
 
@@ -153,7 +162,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  /* //   border: "2px solid blue", */
+  /* border: "2px solid blue"; */
 }
 
 .stylesButtonContainer {
@@ -163,7 +172,7 @@
   align-items: end;
   /* border: 2px solid blue; */
 }
-.descriptionContainer {
+/* .descriptionContainer {
   display: flex;
   justify-content: center;
   align-self: center;
@@ -177,8 +186,7 @@
   width: 80%;
   color: #2c3e50;
   /* border: 2px solid yellow; */
-}
-
+/* } */
 @media screen and (max-width: 768px) {
   .jobbody {
     flex-direction: column;
@@ -195,20 +203,17 @@
   .jobs {
     width: 100%;
     box-sizing: border-box;
-
+    padding: 10px;
     /* border: 2px solid red; */
   }
 
   .searchBar {
-    width: 50%;
-    padding: 10px;
-  }
-  .stylesLogo {
-    font-size: 15px;
-    min-width: 150px;
+    width: 80%;
   }
   .jobHeaderStyle {
-    gap: 70px;
+    display: flex;
+    justify-content: end;
+    width: 100%;
   }
 }
 @media screen and (max-width: 480px) {
@@ -223,15 +228,33 @@
   }
 
   .searchBar {
-    width: 50%;
+    /* border: 2px solid yellow; */
+    width: 80%;
     padding: 10px;
   }
-  .stylesLogo {
-    font-size: 12px;
-    min-width: 120px;
-  }
+  /* .stylesLogo {
+    font-size: 20px;
+  } */
   .jobHeaderStyle {
-    gap: 30px;
+    width: 100vh;
+  }
+}
+
+@media (max-width: 1069px) {
+  .textLogo {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .filterMobile {
+    display: none;
+  }
+}
+
+@media (max-width: 769px) {
+  .filterDesktop {
+    display: none;
   }
 }
 /* .jobs span {
@@ -239,7 +262,7 @@
   color: #2c3e50;
   text-align: center;
 } */
-button {
+.btn-test {
   border-radius: 8px;
   border: none;
   padding: 10px 15px;
@@ -251,6 +274,45 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.btn-test:hover {
   background-color: #1abc9c;
+}
+
+select {
+  border-radius: 8px;
+  border: none;
+  padding: 10px 15px;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: white;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  outline: none;
+  /* padding: 10px; */
+}
+
+/* select:hover {
+  background-color: #1abc9c;
+} */
+.job-filter {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: white;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  color: #2c3e50;
+  /* gap: 5px; */
+  padding: 2px;
+}
+
+.job-filter-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* height: 100%; */
+  gap: 10px;
+  margin: 0 20px;
 }

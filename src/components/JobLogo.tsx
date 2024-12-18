@@ -2,10 +2,14 @@ import { MdOutlineWork } from "react-icons/md";
 
 export function JobLogo() {
   return (
+    // <div className="jobLogoContainer">
     <div className="stylesLogo">
-      <MdOutlineWork />
-      <span>Meu Novo Emprego</span>
+      <div style={{ minWidth: "30px" }}>
+        <MdOutlineWork />
+      </div>
+      <span className="textLogo">Meu Novo Emprego</span>
     </div>
+    // </div>
   );
 }
 

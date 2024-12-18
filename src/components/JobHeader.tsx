@@ -1,86 +1,57 @@
 import { IoSearch } from "react-icons/io5";
 import { JobLogo } from "./JobLogo";
+import { JobsFilter } from "./JobsFilter";
 
 export function JobHeader({
-  setString,
+  setSearchInput,
+  setLocationFilter,
+  setCategoryFilter,
 }: {
-  setString: (value: string) => void;
+  setSearchInput: (value: string) => void;
+  setLocationFilter: (value: string) => void;
+  setCategoryFilter: (value: string) => void;
 }) {
   return (
-    <div className="jobHeaderStyle">
-      <div className="jobLogoStyle">
+    <>
+      <div
+        className="jobheader"
+        style={{
+          height: "80px",
+          width: "100%",
+          backgroundColor: "#2c3e50",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <JobLogo />
-      </div>
-      <div className="searchBar">
-        <div className="searchBarInput">
-          <input
-            type="text"
-            className="inputStyle"
-            placeholder="Digite sua pesquisa..."
-            onChange={(e) => {
-              setString(e.target.value);
-            }}
+
+        <div className="searchBar">
+          <div className="searchBarInput">
+            <input
+              type="text"
+              className="inputStyle"
+              placeholder="Digite sua pesquisa..."
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <button className="searchBarButton">
+              <IoSearch />
+            </button>
+          </div>
+        </div>
+        <div
+          className="filterDesktop"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <JobsFilter
+            setLocationFilter={setLocationFilter}
+            setCategoryFilter={setCategoryFilter}
           />
         </div>
-        <div>
-          <button className="searchBarButton">
-            <IoSearch />
-          </button>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
-
-// const JobHeaderStyle: CSSProperties = {
-//   display: "flex",
-//   justifyContent: "start",
-//   alignItems: "center",
-//   width: "100%",
-//   //   border: "2px solid red",
-//   gap: "200px",
-// };
-// const JobLogoStyle: CSSProperties = {
-//   display: "flex",
-//   justifyContent: "start",
-//   alignItems: "center",
-// };
-// const searchBar: CSSProperties = {
-//   display: "flex",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   alignSelf: "center",
-//   width: "400px",
-//   height: "20px",
-//   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-//   borderRadius: "8px",
-//   padding: "10px",
-//   backgroundColor: "white",
-// };
-
-// const searchBarInput: CSSProperties = {
-//   flex: "1",
-// };
-
-// const inputStyle: CSSProperties = {
-//   display: "flex",
-//   justifyContent: "center",
-//   width: "100%",
-//   border: "none",
-//   outline: "none",
-//   padding: "5px",
-//   backgroundColor: "transparent",
-//   color: "black",
-// };
-
-// const searchBarButton: CSSProperties = {
-//   display: "flex",
-//   justifyContent: "center",
-//   background: "none",
-//   border: "none",
-//   cursor: "pointer",
-//   padding: "5px",
-//   fontSize: "16px",
-//   borderRadius: "0 20px 20px 0",
-//   color: "black",
-// };

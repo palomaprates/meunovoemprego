@@ -1,58 +1,46 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import "./App.css";
 import { JobBody } from "./components/JobBody";
 import { JobHeader } from "./components/JobHeader";
-import { db } from "./services/firebase";
+import { db, functions } from "./services/firebase";
+import { JobsFilter } from "./components/JobsFilter";
 
 export interface IJob {
+  id: number;
+  nome: string;
   source: string;
-  title: string;
+  name: string;
   company: string;
   location: string;
   category: string;
-  link: string;
+  href: string;
   createdAt: Timestamp;
 }
 
 function App() {
-  // const jobs: IJob[] = [
-  //   job1,
-  //   job2,
-  //   job3,
-  //   job4,
-  //   job5,
-  //   job6,
-  //   job7,
-  //   job8,
-  //   job9,
-  //   job1,
-  //   job2,
-  //   job3,
-  //   job4,
-  //   job5,
-  //   job6,
-  //   job7,
-  //   job8,
-  //   job9,
-  // ];
-
   const [jobs, setJobs] = useState<IJob[]>([]);
   const jobsCollection = collection(db, "vacancies");
-
   const getJobs = async () => {
     const dataJobs = await getDocs(jobsCollection);
+    console.log(dataJobs.size);
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
     });
     setJobs(jobsArray);
   };
 
-  const [string, setString] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+
+  const [locationFilter, setLocationFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+
   const filteredJobs = jobs.filter(
-    (job) =>
-      job.category.toLowerCase().includes(string.toLowerCase()) ||
-      job.title.toLowerCase().includes(string.toLowerCase())
+    (j) =>
+      (j.name?.toLowerCase().includes(searchInput.toLowerCase()) ||
+        j.company?.toLowerCase().includes(searchInput.toLowerCase())) &&
+      j.location?.toLowerCase().includes(locationFilter.toLowerCase()) &&
+      j.category?.toLowerCase().includes(categoryFilter.toLowerCase())
   );
 
   useEffect(() => {
@@ -61,15 +49,25 @@ function App() {
 
   return (
     <div className="maincontainer">
-      <div className="jobheader">
-        <JobHeader setString={setString} />
+      <JobHeader
+        setSearchInput={setSearchInput}
+        setLocationFilter={setLocationFilter}
+        setCategoryFilter={setCategoryFilter}
+      />
+      <div className="filterMobile">
+        <JobsFilter
+          setLocationFilter={setLocationFilter}
+          setCategoryFilter={setCategoryFilter}
+        />
       </div>
       <div className="jobbodycontainer">
         {filteredJobs.map((job, index) => (
           <div className="jobs" key={index}>
             <JobBody job={job} />
             <div className="stylesButtonContainer">
-              <button>Ver Detalhes...</button>
+              <a href={job.href}>
+                <button className="btn-test">Ver Detalhes...</button>
+              </a>
             </div>
           </div>
         ))}
@@ -86,18 +84,18 @@ export default App;
 //   company: "Critical Techworks",
 //   location: "Lisboa",
 //   category: "Tecnologia",
-//   link: "https://www.criticaltechworks.com/",
+//   href: "https://www.criticaltechworks.com/",
 //   createdAt: Timestamp.now(),
 //   //   description:
 //   //     "Estamos a procura de um FrontEnd Developer com conhecimentos em React para integrar a nossa equipaprocura de um FrontEnd Developer com conhecimentos em React para integrar a nossa equipa",
 // };
-// const job2: IJob = {
+// const job: IJob = {
 //   source: "Olx",
 //   title: "BackEnd Developer",
 //   company: "Google",
 //   location: "Lisboa",
 //   category: "Tecnologia",
-//   link: "https://www.google.com/",
+//   href: "https://www.google.com/",
 //   createdAt: Timestamp.now(),
 //   // description: "Estamos a procura de um BackEnd Developer",
 // };
@@ -108,7 +106,7 @@ export default App;
 //   company: "Critical Techworks",
 //   location: "Lisboa",
 //   category: "Tecnologia",
-//   link: "https://www.criticaltechworks.com/",
+//   href: "https://www.criticaltechworks.com/",
 //   createdAt: Timestamp.now(),
 //   // description: "Estamos a procura de um FullStack Developer",
 // };
@@ -119,7 +117,7 @@ export default App;
 //   company: "Santander",
 //   location: "Porto",
 //   category: "Tecnologia",
-//   link: "https://www.santander.pt/",
+//   href: "https://www.santander.pt/",
 //   createdAt: Timestamp.now(),
 //   // description: "Estamos a procura de um IT Developer",
 // };
