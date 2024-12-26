@@ -122,7 +122,6 @@
   font-style: normal;
   font-size: 1.5em;
   color: #2c3e50;
-  text-align: center;
 }
 
 .jobs:hover {
@@ -247,8 +246,14 @@
 }
 
 select {
+  display: -webkit-inline-box;
+  -webkit-line-clamp: 0.5;
+  line-clamp: 0.5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-radius: 8px;
-  border: 2px solid yellow;
+  border: none;
   padding: 10px 15px;
   font-size: 12px;
   font-weight: 400;

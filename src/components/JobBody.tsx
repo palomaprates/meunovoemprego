@@ -10,15 +10,15 @@ export function JobBody({ job }: { job: IJob }) {
       <div style={stylesJobTitle}>{job.name}</div>
       <div style={stylesJobSubtitleContainer}>
         <div style={stylesJobSubtitle}>
-          <MdOutlineWork />
+          <MdOutlineWork style={{ marginRight: "5px" }} />
           {job.category}
         </div>
         <div style={stylesJobSubtitle}>
-          <MdPlace />
+          <MdPlace style={{ marginRight: "5px" }} />
           {job.location}
         </div>
         <div style={stylesJobSubtitle}>
-          <FaBuilding />
+          <FaBuilding style={{ marginRight: "5px" }} />
           {job.company}
         </div>
       </div>
@@ -58,7 +58,6 @@ const stylesJobSubtitle: CSSProperties = {
   fontWeight: "300",
   fontStyle: "normal",
   color: "gray",
-  gap: "3px",
 };
 
 const stylesJobSubtitleContainer: CSSProperties = {
