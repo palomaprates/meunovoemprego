@@ -248,7 +248,7 @@
 
 select {
   border-radius: 8px;
-  border: none;
+  border: 2px solid yellow;
   padding: 10px 15px;
   font-size: 12px;
   font-weight: 400;
@@ -257,6 +257,7 @@ select {
   cursor: pointer;
   transition: background-color 0.3s ease;
   outline: none;
+  max-width: 120px;
 }
 
 .job-filter {
