@@ -13,17 +13,10 @@ export function JobHeader({
 }) {
   return (
     <>
-      <div
-        className="jobheader"
-        style={{
-          height: "80px",
-          width: "100%",
-          backgroundColor: "#2c3e50",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <JobLogo />
+      <div className="jobheader">
+        <div className="logoContainer">
+          <JobLogo />
+        </div>
 
         <div className="searchBar">
           <div className="searchBarInput">
@@ -42,10 +35,7 @@ export function JobHeader({
             </button>
           </div>
         </div>
-        <div
-          className="filterDesktop"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
+        <div className="filterDesktop">
           <JobsFilter
             setLocationFilter={setLocationFilter}
             setCategoryFilter={setCategoryFilter}

@@ -32,10 +32,7 @@ const stylesJobBodyContainer: CSSProperties = {
   justifyContent: "start",
   alignItems: "start",
   width: "100%",
-  // height: "100%",
   flex: 1,
-
-  // border: "2px solid yellow",
 };
 const stylesJobTitle: CSSProperties = {
   display: "-webkit-box",
@@ -45,23 +42,23 @@ const stylesJobTitle: CSSProperties = {
   textOverflow: "ellipsis",
   width: "100%",
   height: "100px",
-  // border: "2px solid red",
   fontSize: "20px",
   fontFamily: "Roboto",
   fontWeight: "500",
   fontStyle: "normal",
 };
-const stylesJobSubtitle = {
-  display: "flex",
-  alignItems: "center",
+const stylesJobSubtitle: CSSProperties = {
+  display: "-webkit-box",
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
   fontSize: "16px",
   fontFamily: "Roboto",
   fontWeight: "300",
   fontStyle: "normal",
   color: "gray",
   gap: "3px",
-  // padding: "10px",
-  //   border: "2px solid green",
 };
 
 const stylesJobSubtitleContainer: CSSProperties = {
@@ -70,15 +67,4 @@ const stylesJobSubtitleContainer: CSSProperties = {
   justifyContent: "start",
   alignItems: "start",
   height: "100%",
-  //   border: "2px solid blue",
 };
-
-// const clampDescription: CSSProperties = {
-//   display: "-webkit-box",
-//   WebkitLineClamp: 5,
-//   WebkitBoxOrient: "vertical",
-//   overflow: "hidden",
-//   textOverflow: "ellipsis",
-//   width: "100%",
-//   border: "2px solid red",
-// };
