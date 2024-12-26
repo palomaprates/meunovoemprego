@@ -66,10 +66,9 @@ function App() {
 
     if (categoryFilter) q = query(q, where("category", "==", categoryFilter));
     if (locationFilter) q = query(q, where("location", "==", locationFilter));
+
     setLoading(true);
-
     const dataJobs = await getDocs(q);
-
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
     });

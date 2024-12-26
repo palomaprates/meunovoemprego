@@ -6,7 +6,7 @@ import { FaBuilding } from "react-icons/fa";
 
 export function JobBody({ job }: { job: IJob }) {
   return (
-    <div style={stylesJobBodyContainer}>
+    <div style={stylesJobBody}>
       <div style={stylesJobTitle}>{job.name}</div>
       <div style={stylesJobSubtitleContainer}>
         <div style={stylesJobSubtitle}>
@@ -26,7 +26,7 @@ export function JobBody({ job }: { job: IJob }) {
   );
 }
 
-const stylesJobBodyContainer: CSSProperties = {
+const stylesJobBody: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "start",
