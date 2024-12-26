@@ -102,7 +102,7 @@
   flex-wrap: wrap;
   width: 80%;
   flex: 1;
-  align-items: center;
+  align-items: start;
 }
 
 .jobs {
@@ -160,10 +160,14 @@
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+    border: 2px solid black;
   }
 
   .jobbodycontainer {
     width: 80%;
+    display: flex;
+    overflow-y: scroll;
+    flex-wrap: wrap;
   }
 
   .jobs {
@@ -186,6 +190,7 @@
 
 @media screen and (max-width: 480px) {
   .jobbody {
+    display: flex;
     flex-direction: column;
     width: 100%;
     padding: 10px;
@@ -202,7 +207,13 @@
   }
   .logoContainer {
     display: flex;
-    justify-content: center;
+    justify-content: start;
+  }
+  .jobbodycontainer {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    align-self: center;
   }
 }
 
@@ -223,9 +234,14 @@
   }
 }
 
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 889px) {
   .filterDesktop {
     display: none;
+  }
+  .job-filter-container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
   }
 }
 
@@ -280,7 +296,6 @@ select {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
   gap: 10px;
   margin: 0 20px;
 }

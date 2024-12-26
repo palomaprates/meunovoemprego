@@ -33,7 +33,9 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [loading, setLoading] = useState(false);
   const jobsCollection = collection(db, "vacancies");
+
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<
     DocumentData,
     DocumentData
@@ -64,6 +66,7 @@ function App() {
 
     if (categoryFilter) q = query(q, where("category", "==", categoryFilter));
     if (locationFilter) q = query(q, where("location", "==", locationFilter));
+    setLoading(true);
 
     const dataJobs = await getDocs(q);
 
@@ -72,6 +75,7 @@ function App() {
     });
     setLastDoc(dataJobs.docs[dataJobs.docs.length - 1]);
     setJobs(jobsArray);
+    setLoading(false);
   };
 
   const getNextJobs = async () => {
@@ -99,12 +103,14 @@ function App() {
     if (locationFilter) q = query(q, where("location", "==", locationFilter));
 
     q = query(q, startAfter(lastDoc));
+    setLoading(true);
     const dataJobs = await getDocs(q);
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
     });
     setLastDoc(dataJobs.docs[dataJobs.docs.length - 1]);
     setJobs([...jobs, ...jobsArray]);
+    setLoading(false);
   };
 
   const filteredJobs = jobs.filter(
@@ -154,6 +160,13 @@ function App() {
             </div>
           </div>
         ))}
+        {loading ? (
+          <div
+            style={{ display: "flex", justifyContent: "center", width: 500 }}
+          >
+            <span>Carregando...</span>{" "}
+          </div>
+        ) : null}
       </div>
     </div>
   );
