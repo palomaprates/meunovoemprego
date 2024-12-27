@@ -16,7 +16,7 @@ import { JobHeader } from "./components/JobHeader";
 import { db } from "./services/firebase";
 import { JobsFilter } from "./components/JobsFilter";
 import { getTrigramQueries } from "../utils/getTrigramQueries";
-import { PiReadCvLogoBold } from "react-icons/pi";
+import { JobSubheading } from "./components/JobSubheading";
 
 export interface IJob {
   source: string;
@@ -126,7 +126,6 @@ function App() {
     if (element) {
       const isNearBottom =
         element.scrollHeight - element.scrollTop - element.clientHeight < 50;
-      // element.scrollHeight - element.scrollTop === element.clientHeight;
       if (isNearBottom) {
         getNextJobs();
       }
@@ -143,15 +142,7 @@ function App() {
         setLocationFilter={setLocationFilter}
         setCategoryFilter={setCategoryFilter}
       />
-      <a href="https://wa.me/+351912893251/?text=Ol%C3%A1%2C%20quero%20fazer%20o%20meu%20curr%C3%ADculo.">
-        <button
-          className="btn-test"
-          style={{ margin: "10px", fontSize: "16px" }}
-        >
-          <PiReadCvLogoBold /> AUMENTE SUAS CHANCES DE CONSEGUIR UMA VAGA.
-          CLIQUE AQUI E FAÇA O SEU CURRÍCULO AGORA!
-        </button>
-      </a>
+      <JobSubheading />
       <div className="jobbodycontainer" ref={divRef} onScroll={handleScroll}>
         <div className="filterMobile">
           <JobsFilter
