@@ -148,9 +148,8 @@ function App() {
           className="btn-test"
           style={{ margin: "10px", fontSize: "16px" }}
         >
-          {/* FAÇA O SEU CURRÍCULO AQUI PARA APLICAR-SE À UMA VAGA! */}
-          {/* FAZER JÁ O MEU CURRÍCULO */}
-          <PiReadCvLogoBold /> CRIE O SEU CURRÍCULO AGORA
+          <PiReadCvLogoBold /> AUMENTE SUAS CHANCES DE CONSEGUIR UMA VAGA.
+          CLIQUE AQUI E FAÇA O SEU CURRÍCULO AGORA!
         </button>
       </a>
       <div className="jobbodycontainer" ref={divRef} onScroll={handleScroll}>
