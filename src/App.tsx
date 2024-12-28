@@ -4,6 +4,7 @@ import {
   DocumentData,
   getDocs,
   limit,
+  orderBy,
   query,
   QueryDocumentSnapshot,
   startAfter,
@@ -68,7 +69,9 @@ function App() {
     if (categoryFilter) q = query(q, where("category", "==", categoryFilter));
     if (locationFilter) q = query(q, where("location", "==", locationFilter));
 
+    q = query(q, orderBy("createdAt", "desc"));
     setLoading(true);
+
     const dataJobs = await getDocs(q);
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
@@ -104,6 +107,7 @@ function App() {
 
     q = query(q, startAfter(lastDoc));
     setLoading(true);
+
     const dataJobs = await getDocs(q);
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
