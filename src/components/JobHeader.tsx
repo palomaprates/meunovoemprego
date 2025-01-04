@@ -3,10 +3,12 @@ import { JobLogo } from "./JobLogo";
 import { JobsFilter } from "./JobsFilter";
 
 export function JobHeader({
+  searchInput,
   setSearchInput,
   setLocationFilter,
   setCategoryFilter,
 }: {
+  searchInput: string;
   setSearchInput: (value: string) => void;
   setLocationFilter: (value: string) => void;
   setCategoryFilter: (value: string) => void;
@@ -22,6 +24,7 @@ export function JobHeader({
           <div className="searchBarInput">
             <input
               type="text"
+              value={searchInput}
               className="inputStyle"
               placeholder="Digite sua pesquisa..."
               onChange={(e) => {

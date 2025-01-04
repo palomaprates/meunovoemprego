@@ -6,9 +6,9 @@ import { onSchedule } from "firebase-functions/scheduler";
 import { Timestamp } from "firebase-admin/firestore";
 import { trigramFromArray } from "../../utils/trigramFromArray";
 import { olxList } from "./olxList";
+import { getFirestore } from "firebase-admin/firestore";
 
 admin.initializeApp();
-const db = admin.firestore();
 
 interface Item {
   url: string;
@@ -63,41 +63,55 @@ function isToday(finalDate: Date, today: Date) {
   );
 }
 
+const existUrl = async (href: string) => {
+  const collectionRef = getFirestore().collection("vacancies");
+  const filteredCollection = collectionRef.where("href", "==", href);
+  const querySnapshot = await filteredCollection.get();
+  return !querySnapshot.empty;
+};
+
 async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
   const { data } = await axios.get(item.url, { responseType: "arraybuffer" });
   const decodedData = iconv.decode(Buffer.from(data), "utf-8");
   const $ = cheerio.load(decodedData);
+
   const listItems = $(".jobs-ad-card");
 
-  listItems.each((index, element) => {
-    const name = $(element).find("h4").first().text().trim();
-    const company = $(element)
-      .find("span:contains('Nome Empresa:')")
-      .text()
-      .replace("Nome Empresa: ", "")
-      .trim();
-    const href = "https://olx.pt" + $(element).find("a").attr("href");
-    const olxDate = $(element).find(".css-zmjp5b").first().text().trim();
-    const str = olxDate.split(" de ");
-    const month = str[1];
-    const day = str[0].replace("Para o topo a ", "");
-    const year = str[2];
-    const finalStrDate = `${year}/${convertMonth(month)}/${day}`;
-    let finalDate = new Date();
-    if (!olxDate.includes("Hoje")) finalDate = new Date(finalStrDate);
+  listItems.each((_index, element) => {
+    (async () => {
+      const name = $(element).find("h4").first().text().trim();
+      const titleElement = $(element).find("h4").first();
+      const company = $(element)
+        .find("span:contains('Nome Empresa:')")
+        .text()
+        .replace("Nome Empresa: ", "")
+        .trim();
+      const href = "https://olx.pt" + $(titleElement).parent().attr("href");
+      const olxDate = $(element).find(".css-zmjp5b").first().text().trim();
+      const str = olxDate.split(" de ");
+      const month = str[1];
+      const day = str[0].replace("Para o topo a ", "");
+      const year = str[2];
+      const finalStrDate = `${year}/${convertMonth(month)}/${day}`;
+      let finalDate = new Date();
+      if (!olxDate.includes("Hoje")) finalDate = new Date(finalStrDate);
 
-    const today = new Date();
-    const job: IJob = {
-      source: "Olx",
-      name,
-      location: item.location,
-      category: item.category,
-      company: company || "Não especificado",
-      href,
-      createdAt: Timestamp.fromDate(finalDate),
-      index: trigramFromArray([name, company]),
-    };
-    if (isToday(finalDate, today)) jobs.push(job);
+      const today = new Date();
+      const job: IJob = {
+        source: "Olx",
+        name,
+        location: item.location,
+        category: item.category,
+        company: company || "Não especificado",
+        href,
+        createdAt: Timestamp.fromDate(finalDate),
+        index: trigramFromArray([name, company]),
+      };
+      console.log("isToday:", isToday(finalDate, today));
+      console.log("existUrl:", await existUrl(href));
+      console.log("Job antes de adicionar:", job);
+      if (!(await existUrl(href)) && isToday(finalDate, today)) jobs.push(job);
+    })();
   });
 }
 
@@ -128,11 +142,11 @@ export const periodicOlx = onSchedule(
     const olxJobs = await getJobsOlx();
     await Promise.all(
       olxJobs.map(async (job) => {
-        await db.collection("vacancies").doc().set(job);
+        await getFirestore().collection("vacancies").doc().set(job);
         console.log("Job added", job.category);
       })
     );
-    await db
+    await getFirestore()
       .collection("logs")
       .doc("lastRunOlx")
       .set({ lastRun: Timestamp.now() });

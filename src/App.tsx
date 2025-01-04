@@ -18,6 +18,7 @@ import { db } from "./services/firebase";
 import { JobsFilter } from "./components/JobsFilter";
 import { getTrigramQueries } from "../utils/getTrigramQueries";
 import { JobSubheading } from "./components/JobSubheading";
+import { parseAsString, useQueryState } from "nuqs";
 
 export interface IJob {
   source: string;
@@ -32,7 +33,10 @@ export interface IJob {
 
 function App() {
   const [jobs, setJobs] = useState<IJob[]>([]);
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useQueryState(
+    "searchInput",
+    parseAsString.withDefault("")
+  );
   const [locationFilter, setLocationFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,6 +53,7 @@ function App() {
   const getInitialJobs = async () => {
     let q = query(jobsCollection, limit(PAGE_SIZE));
 
+    q = query(q, orderBy("createdAt", "desc"));
     if (searchInput && searchInput.length < 3) {
       q = query(q, where("name", ">=", searchInput));
       q = query(q, where("name", "<=", searchInput + "\uf8ff"));
@@ -69,7 +74,6 @@ function App() {
     if (categoryFilter) q = query(q, where("category", "==", categoryFilter));
     if (locationFilter) q = query(q, where("location", "==", locationFilter));
 
-    q = query(q, orderBy("createdAt", "desc"));
     setLoading(true);
 
     const dataJobs = await getDocs(q);
@@ -142,6 +146,7 @@ function App() {
   return (
     <div className="maincontainer">
       <JobHeader
+        searchInput={searchInput}
         setSearchInput={setSearchInput}
         setLocationFilter={setLocationFilter}
         setCategoryFilter={setCategoryFilter}
