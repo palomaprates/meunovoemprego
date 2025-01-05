@@ -48,7 +48,7 @@ function App() {
   > | null>(null);
   const divRef = useRef<HTMLDivElement>(null);
 
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 8;
 
   const getInitialJobs = async () => {
     let q = query(jobsCollection, limit(PAGE_SIZE));

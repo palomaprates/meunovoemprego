@@ -112,12 +112,14 @@
   display: flex;
   overflow-y: scroll;
   height: 100%;
-  padding: 10px;
-  gap: 10px;
+  width: 100%;
+  padding: 20px;
+  gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
   flex: 1;
   align-items: start;
+  box-sizing: border-box;
 }
 
 .jobs {
@@ -128,7 +130,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   width: 200px;
-  min-width: 260px;
+  max-width: 200px;
   height: 230px;
   padding: 20px;
   background-color: white;
@@ -171,12 +173,9 @@
 }
 
 @media screen and (max-width: 889px) {
-  .jobs {
-    /* max-width: 300px; */
-    box-sizing: border-box;
-    padding: 10px;
+  .jobbodycontainer {
+    width: 90%;
   }
-
   .searchBar {
     max-width: 400px;
     width: 100%;
@@ -195,10 +194,12 @@
 }
 
 @media screen and (max-width: 480px) {
-  .jobs {
+  /* .jobs {
     padding: 10px;
+  } */
+  .jobbodycontainer {
+    width: 90%;
   }
-
   .searchBar {
     max-width: 400px;
     width: 100%;

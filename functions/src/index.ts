@@ -62,7 +62,6 @@ function isToday(finalDate: Date, today: Date) {
     finalDate.getFullYear() == today.getFullYear()
   );
 }
-
 const existUrl = async (href: string) => {
   const collectionRef = getFirestore().collection("vacancies");
   const filteredCollection = collectionRef.where("href", "==", href);
@@ -107,9 +106,6 @@ async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
         createdAt: Timestamp.fromDate(finalDate),
         index: trigramFromArray([name, company]),
       };
-      console.log("isToday:", isToday(finalDate, today));
-      console.log("existUrl:", await existUrl(href));
-      console.log("Job antes de adicionar:", job);
       if (!(await existUrl(href)) && isToday(finalDate, today)) jobs.push(job);
     })();
   });
