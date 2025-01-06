@@ -5,7 +5,7 @@
   align-items: center;
   height: 100vh;
   width: 100vw;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   background: linear-gradient(to bottom, #f3f4f6, #ffffff);
   overflow: hidden;
 }
@@ -111,17 +111,23 @@
 .jobbodycontainer {
   display: flex;
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 100%;
-  width: 100%;
-  padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
   flex: 1;
   align-items: start;
-  box-sizing: border-box;
 }
-
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Oculta a barra no Chrome, Safari e outros navegadores baseados em WebKit */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Oculta a barra no IE e Edge */
+  scrollbar-width: none; /* Oculta a barra no Firefox */
+}
 .jobs {
   display: flex;
   flex-direction: column;
@@ -129,8 +135,8 @@
   align-items: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 200px;
-  max-width: 200px;
+  width: 270px;
+  max-width: 270px;
   height: 230px;
   padding: 20px;
   background-color: white;
@@ -187,6 +193,7 @@
     box-sizing: border-box;
   }
   .job-filter-container {
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     width: 400px;
@@ -194,9 +201,6 @@
 }
 
 @media screen and (max-width: 480px) {
-  /* .jobs {
-    padding: 10px;
-  } */
   .jobbodycontainer {
     width: 90%;
   }
@@ -245,7 +249,7 @@
   }
 }
 
-.btn-test {
+.custom-btn {
   border-radius: 8px;
   border: none;
   padding: 10px 15px;
@@ -257,7 +261,7 @@
   transition: background-color 0.3s ease;
 }
 
-.btn-test:hover {
+.custom-btn:hover {
   background-color: #1abc9c;
 }
 
