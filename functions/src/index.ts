@@ -69,6 +69,23 @@ const existUrl = async (href: string) => {
   return !querySnapshot.empty;
 };
 
+const deleteOldDocuments = async () => {
+  const threeDaysAgo = new Date();
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 4);
+  const collectionReference = getFirestore().collection("vacancies");
+  const filterCollection = collectionReference.where(
+    "createdAt",
+    "<",
+    Timestamp.fromDate(threeDaysAgo)
+  );
+  const qSnapshot = await filterCollection.get();
+  if (qSnapshot.empty) return;
+  const deletePromises = qSnapshot.docs.map((doc) => {
+    return doc.ref.delete();
+  });
+  await Promise.allSettled(deletePromises);
+};
+
 async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
   const { data } = await axios.get(item.url, { responseType: "arraybuffer" });
   const decodedData = iconv.decode(Buffer.from(data), "utf-8");
@@ -146,5 +163,7 @@ export const periodicOlx = onSchedule(
       .collection("logs")
       .doc("lastRunOlx")
       .set({ lastRun: Timestamp.now() });
+
+    await deleteOldDocuments();
   }
 );
