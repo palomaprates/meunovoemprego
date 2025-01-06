@@ -3,6 +3,7 @@ import { MdPlace } from "react-icons/md";
 import { MdOutlineWork } from "react-icons/md";
 import { IJob } from "../App";
 import { FaBuilding } from "react-icons/fa";
+import { FaCalendar } from "react-icons/fa";
 
 export function JobBody({ job }: { job: IJob }) {
   return (
@@ -20,6 +21,10 @@ export function JobBody({ job }: { job: IJob }) {
         <div style={stylesJobSubtitle}>
           <FaBuilding style={{ marginRight: "5px" }} />
           {job.company}
+        </div>
+        <div style={stylesJobSubtitle}>
+          <FaCalendar style={{ marginRight: "5px" }} />
+          {job.createdAt.toDate().toLocaleDateString()}
         </div>
       </div>
     </div>

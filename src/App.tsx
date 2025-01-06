@@ -1,12 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import {
   collection,
+  doc,
   DocumentData,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   QueryDocumentSnapshot,
+  setDoc,
   startAfter,
   Timestamp,
   where,
@@ -19,6 +22,7 @@ import { JobsFilter } from "./components/JobsFilter";
 import { getTrigramQueries } from "../utils/getTrigramQueries";
 import { JobSubheading } from "./components/JobSubheading";
 import { parseAsString, useQueryState } from "nuqs";
+import { CircularProgress } from "@mui/material";
 
 export interface IJob {
   source: string;
@@ -48,7 +52,7 @@ function App() {
   > | null>(null);
   const divRef = useRef<HTMLDivElement>(null);
 
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 20;
 
   const getInitialJobs = async () => {
     let q = query(jobsCollection, limit(PAGE_SIZE));
@@ -57,7 +61,7 @@ function App() {
     if (searchInput && searchInput.length < 3) {
       q = query(q, where("name", ">=", searchInput));
       q = query(q, where("name", "<=", searchInput + "\uf8ff"));
-    } else {
+    } else if (searchInput && searchInput.length >= 3) {
       q = query(
         jobsCollection,
         limit(PAGE_SIZE),
@@ -80,6 +84,7 @@ function App() {
     const jobsArray: IJob[] = dataJobs.docs.map((doc) => {
       return doc.data() as IJob;
     });
+    console.log(jobsArray);
     setLastDoc(dataJobs.docs[dataJobs.docs.length - 1]);
     setJobs(jobsArray);
     setLoading(false);
@@ -89,6 +94,7 @@ function App() {
     if (!lastDoc) return;
     let q = query(jobsCollection, limit(PAGE_SIZE));
 
+    q = query(q, orderBy("createdAt", "desc"));
     if (searchInput && searchInput.length < 3) {
       q = query(q, where("name", ">=", searchInput));
       q = query(q, where("name", "<=", searchInput + "\uf8ff"));
@@ -121,14 +127,6 @@ function App() {
     setLoading(false);
   };
 
-  const filteredJobs = jobs.filter(
-    (j) =>
-      (j.name?.toLowerCase().includes(searchInput.toLowerCase()) ||
-        j.company?.toLowerCase().includes(searchInput.toLowerCase())) &&
-      j.location?.toLowerCase().includes(locationFilter.toLowerCase()) &&
-      j.category?.toLowerCase().includes(categoryFilter.toLowerCase())
-  );
-
   const handleScroll = () => {
     const element = divRef.current;
     if (element) {
@@ -139,9 +137,22 @@ function App() {
       }
     }
   };
+
+  const saveLog = async () => {
+    let total = 0;
+    const ref = doc(db, "logs", "visits");
+    const snap = await getDoc(ref);
+    if (snap.exists()) total = snap.data().total + 1;
+    await setDoc(ref, { total: total });
+  };
+
   useEffect(() => {
     getInitialJobs();
   }, [locationFilter, categoryFilter, searchInput]);
+
+  useEffect(() => {
+    saveLog();
+  }, []);
 
   return (
     <div className="maincontainer">
@@ -152,31 +163,39 @@ function App() {
         setCategoryFilter={setCategoryFilter}
       />
       <JobSubheading />
-      <div className="jobbodycontainer" ref={divRef} onScroll={handleScroll}>
-        <div className="filterMobile">
-          <JobsFilter
-            setLocationFilter={setLocationFilter}
-            setCategoryFilter={setCategoryFilter}
-          />
-        </div>
-        {filteredJobs.map((job, index) => (
+      <JobsFilter
+        setLocationFilter={setLocationFilter}
+        setCategoryFilter={setCategoryFilter}
+      />
+      <div
+        className="jobbodycontainer scrollbar-hide"
+        ref={divRef}
+        onScroll={handleScroll}
+      >
+        <div className="filterMobile"></div>
+        {jobs.map((job, index) => (
           <div className="jobs" key={index}>
             <JobBody job={job} />
             <div className="stylesButtonContainer">
               <a href={job.href}>
-                <button className="btn-test">Ver Detalhes...</button>
+                <button className="custom-btn">Ver Detalhes...</button>
               </a>
             </div>
           </div>
         ))}
-        {loading ? (
-          <div
-            style={{ display: "flex", justifyContent: "center", width: 500 }}
-          >
-            <span>Carregando...</span>{" "}
-          </div>
-        ) : null}
       </div>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: 10,
+            color: "#094f9e",
+          }}
+        >
+          <CircularProgress color="inherit" size={20} />
+        </div>
+      ) : null}
     </div>
   );
 }

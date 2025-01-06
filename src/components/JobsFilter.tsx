@@ -50,7 +50,7 @@ export function JobsFilter({
             id="locationFilter"
             onChange={handleSelectedLocation}
           >
-            <option id="optionLocation" value="0">
+            <option id="optionLocation" value="">
               Localização
             </option>
             {states.map((state, index) => (
@@ -67,7 +67,7 @@ export function JobsFilter({
             id="categoryFilter"
             onChange={handleSelectedCategory}
           >
-            <option id="optionCategory" value="0">
+            <option id="optionCategory" value="">
               Categoria
             </option>
             {categories.map((category, index) => (
