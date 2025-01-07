@@ -98,7 +98,7 @@ function App() {
     if (searchInput && searchInput.length < 3) {
       q = query(q, where("name", ">=", searchInput));
       q = query(q, where("name", "<=", searchInput + "\uf8ff"));
-    } else {
+    } else if (searchInput && searchInput.length >= 3) {
       q = query(
         jobsCollection,
         limit(PAGE_SIZE),
