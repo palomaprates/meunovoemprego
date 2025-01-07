@@ -163,16 +163,20 @@ function App() {
         setCategoryFilter={setCategoryFilter}
       />
       <JobSubheading />
-      <JobsFilter
-        setLocationFilter={setLocationFilter}
-        setCategoryFilter={setCategoryFilter}
-      />
+      <div className="filterMobile">
+        <JobsFilter
+          setLocationFilter={setLocationFilter}
+          setCategoryFilter={setCategoryFilter}
+        />
+      </div>
       <div
         className="jobbodycontainer scrollbar-hide"
         ref={divRef}
         onScroll={handleScroll}
       >
-        <div className="filterMobile"></div>
+        {!loading && !jobs.length && (
+          <span>Não há vagas com os filtros selecionados</span>
+        )}
         {jobs.map((job, index) => (
           <div className="jobs" key={index}>
             <JobBody job={job} />
