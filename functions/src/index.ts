@@ -62,11 +62,35 @@ function isToday(finalDate: Date, today: Date) {
     finalDate.getFullYear() == today.getFullYear()
   );
 }
+
 const existUrl = async (href: string) => {
   const collectionRef = getFirestore().collection("vacancies");
   const filteredCollection = collectionRef.where("href", "==", href);
   const querySnapshot = await filteredCollection.get();
   return !querySnapshot.empty;
+};
+
+const cleanDuplicates = async () => {
+  const collectionRef = getFirestore().collection("vacancies");
+  const snapshot = await collectionRef.get();
+
+  if (snapshot.empty) return;
+
+  const urlMap = new Map();
+  const duplicates: string[] = [];
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const href = data.href.trim().toLowerCase();
+    if (urlMap.has(href)) {
+      duplicates.push(doc.id);
+    } else {
+      urlMap.set(href, doc.id);
+    }
+  });
+  const deletePromises = duplicates.map((docId) =>
+    collectionRef.doc(docId).delete()
+  );
+  await Promise.all(deletePromises);
 };
 
 const deleteOldDocuments = async () => {
@@ -159,6 +183,9 @@ export const periodicOlx = onSchedule(
         console.log("Job added", job.category);
       })
     );
+
+    await cleanDuplicates();
+
     await getFirestore()
       .collection("logs")
       .doc("lastRunOlx")
