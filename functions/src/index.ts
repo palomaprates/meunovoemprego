@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import * as cheerio from "cheerio";
 import * as iconv from "iconv-lite";
 import * as admin from "firebase-admin";
@@ -111,8 +111,16 @@ const deleteOldDocuments = async () => {
 };
 
 async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
-  const { data } = await axios.get(item.url, { responseType: "arraybuffer" });
-  const decodedData = iconv.decode(Buffer.from(data), "utf-8");
+  const response = await fetch(item.url, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+      "Accept-Language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+      Referer: "https://www.olx.pt/",
+    },
+  });
+  const arrayBuffer = await response.arrayBuffer();
+  const decodedData = iconv.decode(Buffer.from(arrayBuffer), "utf-8");
   const $ = cheerio.load(decodedData);
 
   const listItems = $(".jobs-ad-card");
@@ -120,14 +128,15 @@ async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
   listItems.each((_index, element) => {
     (async () => {
       const name = $(element).find("h4").first().text().trim();
-      const titleElement = $(element).find("h4").first();
+      // const titleElement = $(element).find("a:has(h4)").first();
+      const aTag = $(element).find("a.css-13gxtrp").first();
       const company = $(element)
-        .find("span:contains('Nome Empresa:')")
+        .find("div:contains('Nome Empresa:')")
         .text()
         .replace("Nome Empresa: ", "")
         .trim();
-      const href = "https://olx.pt" + $(titleElement).parent().attr("href");
-      const olxDate = $(element).find(".css-zmjp5b").first().text().trim();
+      const href = "https://olx.pt" + aTag.attr("href");
+      const olxDate = $(element).find(".css-1h96hyx").first().text().trim();
       const str = olxDate.split(" de ");
       const month = str[1];
       const day = str[0].replace("Para o topo a ", "");
@@ -142,7 +151,7 @@ async function getJobsFromOlxUrl(jobs: IJob[], item: Item): Promise<void> {
         name,
         location: item.location,
         category: item.category,
-        company: company || "Não especificado",
+        company: "Não especificado",
         href,
         createdAt: Timestamp.fromDate(finalDate),
         index: trigramFromArray([name, company]),
